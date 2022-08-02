@@ -1,0 +1,6 @@
+.venv/
+*.env
+res/*.png
+res/*.jpg
+!default.png
+!example.png
