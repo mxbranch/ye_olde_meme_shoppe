@@ -12,6 +12,8 @@ def bot_main():
 
     # load environmental variables
     env = dotenv_values(".env")
+    admin_users = env['ADMINUSERS'].split("|")
+    print(admin_users)
 
     # initialise bot
     bot = commands.Bot(command_prefix = "#")
@@ -124,55 +126,65 @@ def bot_main():
     @bot.command()
     async def addimage(ctx, name):
 
-        # Check if the requested name is free
-        try:
+        message = await ctx.channel.fetch_message(ctx.message.id)
 
-            image = open("res/" + name + ".png")
-            await ctx.send("Error: image id already used, try another")
-            image.close()
+        print(str(message.author))
+
+        if str(message.author) not in admin_users:
+            await ctx.send("Error: user not permitted. Nice try!")
             return
+        else:
 
-        except:
-
-            # If requested name is free check that message was a reply w/ an image
+            # Check if the requested name is free
             try:
 
-                message = await ctx.channel.fetch_message(ctx.message.reference.message_id)
-                if str(message.attachments) == "[]":
-
-                    await ctx.send("Error: command must be used in reply to an image")
-                    return
-
-                else:
-
-                    # if the image reply exists get the filename of the image
-                    filename = str(message.attachments).split("filename='")[1].split("' ")[0]
-
-                    # if it's a png save it, if it's a jpg convert it to png then save it
-                    if filename.endswith(".png"):
-                        await message.attachments[0].save(fp = "res/"+name+".png")
-                    if filename.endswith(".jpg") or filename.endswith(".jpeg"):
-                        await message.attachments[0].save(fp = "res/"+name+".jpg")
-                        img = Image.open("res/"+name+".jpg")
-                        img.save("res/"+name+".png")
-                        img.close()
-                        os.remove("res/"+name+".jpg")
-                    
-                    # if the image is too large resize it
-                    img = Image.open("res/"+name+".png")
-                    W, H = img.size
-                    if W > 800.0:
-                        scale: float = 800.0 / W
-                        scaleimg = img.resize((800, int(H*scale)))
-                        scaleimg.save("res/"+name+".png")
-                    img.close()
+                image = open("res/" + name + ".png")
+                await ctx.send("Error: image id already used, try another")
+                image.close()
+                return
 
             except:
-                await ctx.send("Error: command must be used in reply to an image.")
-                return
-            
-            # confirmation message
-            await ctx.send("Added image to database with name: " + name)
+
+                # If requested name is free check that message was a reply w/ an image
+                try:
+
+                    message = await ctx.channel.fetch_message(ctx.message.reference.message_id)
+
+                    if str(message.attachments) == "[]":
+
+                        await ctx.send("Error: command must be used in reply to an image")
+                        return
+
+                    else:
+
+                        # if the image reply exists get the filename of the image
+                        filename = str(message.attachments).split("filename='")[1].split("' ")[0]
+
+                        # if it's a png save it, if it's a jpg convert it to png then save it
+                        if filename.endswith(".png"):
+                            await message.attachments[0].save(fp = "res/"+name+".png")
+                        if filename.endswith(".jpg") or filename.endswith(".jpeg"):
+                            await message.attachments[0].save(fp = "res/"+name+".jpg")
+                            img = Image.open("res/"+name+".jpg")
+                            img.save("res/"+name+".png")
+                            img.close()
+                            os.remove("res/"+name+".jpg")
+                        
+                        # if the image is too large resize it
+                        img = Image.open("res/"+name+".png")
+                        W, H = img.size
+                        if W > 800.0:
+                            scale: float = 800.0 / W
+                            scaleimg = img.resize((800, int(H*scale)))
+                            scaleimg.save("res/"+name+".png")
+                        img.close()
+
+                except:
+                    await ctx.send("Error: command must be used in reply to an image.")
+                    return
+                
+                # confirmation message
+                await ctx.send("Added image to database with name: " + name)
 
     # go bot go!
     bot.run(env['TOKEN'])

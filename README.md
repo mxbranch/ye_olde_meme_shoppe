@@ -16,6 +16,7 @@ A discord bot which can generate old-fashioned "top and bottom text" style image
   - When used as a reply to a message with an image attachment generates a macro using that image.
 - `#addimage id`
   - When used as a reply to a message with an image attachment this command downloads the image and adds it as a template with the given id.
+  - This only functions for specified discord usernames. These are loaded from an environmental variable - see the .env_template for the format.
 
 ## Example Output
 
@@ -23,4 +24,4 @@ A discord bot which can generate old-fashioned "top and bottom text" style image
 
 ## Warning
 
-This bot is not ready for use on public servers! Only use it on servers with people you trust as it Can and Will download images without any regard for the safety of you or others! You Have Been Warned.
+Anybody added as an 'admin user' in the .env file will be able to download any image to the server the bot is running on. Please be cautious and only add people you trust will not abuse this.
