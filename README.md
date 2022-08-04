@@ -17,6 +17,8 @@ A discord bot which can generate old-fashioned "top and bottom text" style image
 - `#addimage id`
   - When used as a reply to a message with an image attachment this command downloads the image and adds it as a template with the given id.
   - This only functions for specified discord usernames. These are loaded from an environmental variable - see the .env_template for the format.
+- `#souls (text)`
+  - When used as a reply to a message with an image attachment this command adds the "You Died" overlay from various From Software games onto it.
 
 ## Example Output
 
@@ -25,3 +27,7 @@ A discord bot which can generate old-fashioned "top and bottom text" style image
 ## Warning
 
 Anybody added as an 'admin user' in the .env file will be able to download any image to the server the bot is running on. Please be cautious and only add people you trust will not abuse this.
+
+## Acknowledgements
+
+Ye Olde Meme Shoppe uses [EB Garamond](http://www.georgduffner.at/ebgaramond/) under the [SIL Open Font License](https://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL), many thanks to Georg Duffner.
