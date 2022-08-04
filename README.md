@@ -19,6 +19,8 @@ A discord bot which can generate old-fashioned "top and bottom text" style image
   - This only functions for specified discord usernames. These are loaded from an environmental variable - see the .env_template for the format.
 - `#souls (text)`
   - When used as a reply to a message with an image attachment this command adds the "You Died" overlay from various From Software games onto it.
+- `#wasted`
+  - When used as a reply to a message with an image attachment this command adds the "Wasted" overlay from various Grand Theft Auto games onto it.
 
 ## Example Output
 

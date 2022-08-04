@@ -3,7 +3,7 @@
 from discord.ext import commands
 import discord
 from dotenv import dotenv_values
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageOps
 import os
 
 # bot_main() - wrapper function for program
@@ -252,6 +252,75 @@ def bot_main():
         background.save("res/meme.png")
         background.close()
         souls_overlay.close()
+
+        # Send the image
+
+        image = discord.File('res/meme.png')
+
+        await ctx.send(file=image)
+
+        return
+
+    # wasted() - GTA death screen
+    # Expects to be invoked as a reply to an image. 
+    @bot.command()
+    async def wasted(ctx):
+
+        # Check to see if the command has been invoked in a reply to an image
+        try:
+
+            message = await ctx.channel.fetch_message(ctx.message.reference.message_id)
+            if str(message.attachments) == "[]":
+
+                await ctx.send("Error: command must be used in reply to an image")
+                return
+
+            else:
+
+                # if the image reply exists get the filename of the image
+                filename = str(message.attachments).split("filename='")[1].split("' ")[0]
+                # if it's a png save it, if it's a jpg convert it to png then save it
+                if filename.endswith(".png"):
+                    await message.attachments[0].save(fp = "res/temp.png")
+                if filename.endswith(".jpg") or filename.endswith(".jpeg"):
+                    await message.attachments[0].save(fp = "res/temp.jpg")
+                    img = Image.open("res/temp.jpg")
+                    img.save("res/temp.png")
+                    img.close()
+                    os.remove("res/temp.jpg")
+                
+                # if the image is too large resize it
+                img = Image.open("res/temp.png")
+                W, H = img.size
+                if W > 800.0:
+                    scale: float = 800.0 / W
+                    scaleimg = img.resize((800, int(H*scale)))
+                    scaleimg.save("res/temp.png")
+                img.close()
+
+        except:
+            await ctx.send("Error: command must be used in reply to an image.")
+            return
+
+        # Make original image black and white
+        # Add vignette overlay to the requested image
+        # Add 'Wasted' text
+
+        background = Image.open("res/temp.png").convert("RGBA")
+        background = ImageOps.grayscale(background)
+        background.save("res/temp.png")
+        background.close()
+
+        gta_overlay = Image.open("res/gta_vignette.png").convert("RGBA")
+        wasted_overlay = Image.open("res/wasted.png").convert("RGBA")
+        background = Image.open("res/temp.png").convert("RGBA")
+        W, H = background.size
+        gta_overlay = gta_overlay.resize((W, H))
+        background.paste(gta_overlay, (0, 0), gta_overlay)
+        background.paste(wasted_overlay, (int(W/2 - 148), int(H/2-148)), wasted_overlay)
+        background.save("res/meme.png")
+        background.close()
+        gta_overlay.close()
 
         # Send the image
 
