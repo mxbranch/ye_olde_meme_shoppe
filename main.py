@@ -190,10 +190,12 @@ def bot_main():
     # souls() - "You Died" image overlay with customisable text.
     # Expects to be invoked as a reply to an image. 
     @bot.command()
-    async def souls(ctx, died = None):
+    async def souls(ctx, died = None, caps = None):
 
         if died == None:
             died = "YOU DIED"
+        if caps != "case":
+            died = died.upper()
 
         # Check to see if the command has been invoked in a reply to an image
         try:
