@@ -237,13 +237,11 @@ def bot_main():
 
         souls_overlay = Image.open("res/souls_overlay.png")
         background = Image.open("res/temp.png")
-
+        W, H = background.size
         overlayH = int(H / 2.0 - 300)
         background.paste(souls_overlay, (0, overlayH), souls_overlay)
 
         # open the image as a drawing surface and write the "You Died" text
-
-        W, H = background.size
 
         draw = ImageDraw.Draw(background)
 
