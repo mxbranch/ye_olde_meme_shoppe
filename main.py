@@ -16,7 +16,7 @@ def bot_main():
     print(admin_users)
 
     # initialise bot
-    bot = commands.Bot(command_prefix = "d#")
+    bot = commands.Bot(command_prefix = "#")
 
     # load font for image macro creation
     font = ImageFont.truetype('res/impact.ttf', 60)
