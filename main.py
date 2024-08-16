@@ -19,8 +19,8 @@ def bot_main():
     bot = commands.Bot(command_prefix = "#")
 
     # load font for image macro creation
-    font = ImageFont.truetype('res/impact.ttf', 60)
-    souls_font = ImageFont.truetype("res/ebgaramond.ttf", 80)
+    font = ImageFont.truetype('res/impact.ttf', 50)
+    souls_font = ImageFont.truetype("res/ebgaramond.ttf", 50)
 
     # initial event function
     @bot.event
